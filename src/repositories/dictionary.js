@@ -1,3 +1,4 @@
+import $ from 'jquery';
 const processLine= function processLine(line){
   var elements = line.split('\t');
   return {
@@ -7,9 +8,17 @@ const processLine= function processLine(line){
     title: elements[0]
   }
 }
-const wordTranslationFromHtml = (html)=>{
-  const dom = document.createElement('html');
-  dom.innerHtml = html;
+const loadHtmlOnDom= (html)=>{
+  $('#search-word-dom').load()
+  const newElement = document.createElement('html');
+  newElement.innerHtml = html;
+  const dom = document.getElementById('search-word-dom');
+  dom.appendChild(newElement);
+  return new Promise((resolve, reject)=>{
+    setTimeout(()=> resolve(dom), 200)
+  })
+}
+const wordTranslationFromHtml = (dom)=>{
   const acceptions = Array.from(dom.querySelectorAll('.pos-block')).map((block)=>{
     return {
       translations:Array.from(block.querySelectorAll('.sense-block')).map((element)=>{
@@ -32,12 +41,18 @@ const wordTranslationFromHtml = (html)=>{
 const Dictionary = {
   getWordTranslation:(wordUrl)=>{
     return new Promise((resolve, reject)=>{
-      fetch(wordUrl)
-        .then((response)=> response.text())
-        .then(function(html){
-          const word = wordTranslationFromHtml(html);
-          resolve(word);
-        })
+      $('#search-word-dom').load(wordUrl, ()=>{
+        const dom = document.getElementById('search-word-dom');
+        const word = wordTranslationFromHtml(dom);
+        resolve(word);
+      })
+      // fetch(wordUrl)
+      //   .then((response)=> response.text())
+      //   .then(loadHtmlOnDom)
+      //   .then(function(dom){
+      //     const word = wordTranslationFromHtml(dom);
+      //     resolve(word);
+      //   })
     })
   },
   getWordsStartingWith: (word)=>{

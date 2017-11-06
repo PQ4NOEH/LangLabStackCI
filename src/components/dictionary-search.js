@@ -33,6 +33,7 @@ class DictionarySearch extends  Component{
   render(){
     const { isLoading, value, results } = this.state
     return <div>
+    <div id='search-word-dom' style={{display:'none'}}></div>
       <Search
         loading={isLoading}
         onResultSelect={this.handleResultSelect.bind(this)}
