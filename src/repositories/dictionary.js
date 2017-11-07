@@ -18,8 +18,11 @@ const loadHtmlOnDom= (html)=>{
     setTimeout(()=> resolve(dom), 200)
   })
 }
+const haveFoundWord= (dom)=> dom.querySelector('.di-title') !== null;
 const wordTranslationFromHtml = (dom)=>{
   const acceptions = Array.from(dom.querySelectorAll('.pos-block')).map((block)=>{
+  const existsUkPronunciation = block.querySelector('.uk span:last-of-type') !== null;
+  const existsUsPronunciation = block.querySelector('.us span:last-of-type') !== null;
     return {
       translations:Array.from(block.querySelectorAll('.sense-block')).map((element)=>{
         return {
@@ -29,8 +32,8 @@ const wordTranslationFromHtml = (dom)=>{
         };
       }),
       pos:block.querySelector('.pos').innerText,
-      ukPronunciationUrl:block.querySelector('.uk span:last-of-type').attributes["data-src-mp3"].value,
-      usPronunciationUrl:block.querySelector('.us span:last-of-type').attributes["data-src-mp3"].value
+      ukPronunciationUrl:existsUkPronunciation ? block.querySelector('.uk span:last-of-type').attributes["data-src-mp3"].value : "",
+      usPronunciationUrl:existsUsPronunciation ? block.querySelector('.us span:last-of-type').attributes["data-src-mp3"].value : ""
     }
   });
   return {
@@ -43,16 +46,9 @@ const Dictionary = {
     return new Promise((resolve, reject)=>{
       $('#search-word-dom').load(wordUrl, ()=>{
         const dom = document.getElementById('search-word-dom');
-        const word = wordTranslationFromHtml(dom);
-        resolve(word);
+        if(haveFoundWord(dom)) resolve(wordTranslationFromHtml(dom));
+        else reject();
       })
-      // fetch(wordUrl)
-      //   .then((response)=> response.text())
-      //   .then(loadHtmlOnDom)
-      //   .then(function(dom){
-      //     const word = wordTranslationFromHtml(dom);
-      //     resolve(word);
-      //   })
     })
   },
   getWordsStartingWith: (word)=>{

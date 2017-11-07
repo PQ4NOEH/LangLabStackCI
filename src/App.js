@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DictionarySearch from './components/dictionary-search';
-import PendingWords from './components/pending-words';
+import Cleaner from './components/cleaner';
 import 'semantic-ui-css/semantic.min.css';
 class App extends Component {
   constructor(props){
@@ -13,7 +13,7 @@ class App extends Component {
         <header>
           Dictionary stack
         </header>
-        <PendingWords words={this.state.pendingWordsElements}/>
+        <Cleaner words={this.state.pendingWordsElements}/>
         <DictionarySearch onSearchResultSelected={this.onSearchResultSelected.bind(this)}/>
       </div>
     );
