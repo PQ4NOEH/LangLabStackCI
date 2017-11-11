@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}

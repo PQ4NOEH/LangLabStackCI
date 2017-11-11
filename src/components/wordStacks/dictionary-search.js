@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Search } from 'semantic-ui-react';
-import Dictionary from '../repositories/dictionary';
+import Dictionary from '../../repositories/dictionary';
 
 var searchWords= function searchWords(component){
   if (component.state.value.length < 1) return component.resetComponent()

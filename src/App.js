@@ -1,27 +1,22 @@
 import React, { Component } from 'react';
-import DictionarySearch from './components/dictionary-search';
-import Cleaner from './components/cleaner';
+import AppHeader from './components/appHeader';
+import AppFooter from './components/appFooter';
+import WordStacks from './components/wordStacks/wordStacks';
+
+
 import 'semantic-ui-css/semantic.min.css';
-class App extends Component {
+class App extends Component{
   constructor(props){
     super(props);
-    this.state = {pendingWordsElements: []};
   }
-  render() {
-    return (
-      <div className="App">
-        <header>
-          Dictionary stack
-        </header>
-        <Cleaner words={this.state.pendingWordsElements}/>
-        <DictionarySearch onSearchResultSelected={this.onSearchResultSelected.bind(this)}/>
-      </div>
-    );
-  }
-  onSearchResultSelected(selectedWord){
-    var array = this.state.pendingWordsElements;
-    array.push(selectedWord);
-    this.setState({pendingWordsElements: array})
+  render(){
+    return <div class="Site">
+      <AppHeader />
+      <main className={"Site-content"}>
+        <WordStacks />
+      </main>
+      <AppFooter />
+    </div>;
   }
 }
 
